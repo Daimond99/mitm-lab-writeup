@@ -1,0 +1,3 @@
+# sensitive originals — never publish (student ID + real domains)
+*.pdf
+*.dot
