@@ -203,11 +203,17 @@ ip.addr == 192.168.174.137 and http.request.method == "POST"
 
 บน Windows VM เข้าเว็บเป้าหมาย (`shop-example.com`) ที่ถูกปลอม — browser ขึ้น "ไม่ปลอดภัย" แล้วเหยื่อกรอก credential
 
+![Lab2 · victim login page](img/lab2victim-6.png)
+
 ### ขั้นตอนที่ 7 — เปรียบเทียบผล: hash vs plaintext
 
 **ถ้าไม่ใช้ keylogger** — password ที่ดักได้ถูก hash (เช่น `password: cdf4a007e2b02a0c49fc9b7ccfbb8a10c644f635e1765dcf2a7ab794ddc7edac`) ต้องเอาไป crack:
 
+![Lab2 · hashed password](img/lab2victim-7-hash.png)
+
 **เมื่อใช้ keylogger payload** — ดัก keystroke ได้ plaintext ตรง ๆ ไม่ต้อง crack:
+
+![Lab2 · plaintext via keylogger](img/lab2victim-7-keylogger.png)
 
 **ผลลัพธ์** (ค่า dummy):
 ```
