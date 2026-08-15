@@ -78,8 +78,7 @@ set dns.spoof.domains         google.corn, *.google.corn, bank-example.com, *.ba
 - `replacements` — โดเมนหลอก (`.com` → `.corn`) ใช้ bypass HSTS
 - `dns.spoof.domains` — โดเมนที่จะปลอม DNS response
 
-![Lab1 · caplet config](<img width="1126" height="457" alt="caplet-config" src="https://github.com/user-attachments/assets/3ffd7460-9db9-4a40-964a-5c5f2c6f24df" />
-)
+![Lab1 · caplet config]()
 
 ### ขั้นตอนที่ 2 — เริ่ม bettercap + สแกนเครือข่าย
 
