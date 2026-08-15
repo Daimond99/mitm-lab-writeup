@@ -5,3 +5,4 @@
 # screenshots — author adds redacted images later
 images/
 *.png
+!img/*.png
