@@ -22,39 +22,6 @@
 
 ---
 
-##ภาพประกอบ — mapping รูปต่อขั้นตอน
-
-วาง redacted image ลง `images/` ตามชื่อไฟล์นี้ (README embed ไว้แล้วในแต่ละขั้นตอน). คอลัมน์ "ที่มา" = รูปไหนใน PDF ต้นฉบับ, "ต้อง redact" = จุดที่ต้องปิดชื่อโดเมนจริงก่อนลง
-
-### Lab 1 (HTTP PDF)
-| ไฟล์ | ที่มา (PDF หน้า / รูป) | ต้อง redact |
-|---|---|---|
-| `lab1_01_caplet.png` | หน้า 1 · รูปบน (nano `hstshijack.cap`) | **ใช่** — targets/replacements/dns.spoof.domains |
-| `lab1_02_netshow.png` | หน้า 1 · รูปล่าง (net.probe/net.show) | ไม่ (มีแค่ IP/MAC) |
-| `lab1_03_ipconfig.png` | หน้า 2 · รูปบน (Windows ipconfig) | ไม่ |
-| `lab1_04_arpspoof.png` | หน้า 2 · รูปล่าง (arp.spoof) | ไม่ |
-| `lab1_05_sniff.png` | หน้า 3 · รูปบน (net.sniff) | ไม่ |
-| `lab1_06_hstshijack.png` | หน้า 3 · รูปล่าง (caplet output) | **ใช่** — targets/replacements |
-| `lab1_07_victim.png` | หน้า 4 · หน้า browser เหยื่อ | **ใช่** — URL bar + โลโก้ |
-| `lab1_08_wireshark.png` | หน้า 5 · packet list | **ใช่** — path `/…WebSite/` |
-| `lab1_09_creds.png` | หน้า 6 · POST detail (username/password) | **ใช่** — path `/…WebSite/` |
-
-### Lab 2 (Keylogger PDF)
-| ไฟล์ | ที่มา (PDF หน้า / รูป) | ต้อง redact |
-|---|---|---|
-| `lab2_01_payload.png` | หน้า 1 · รูปบน (nano `hstshijack.payloads`) | **ใช่** — targets/dns.spoof.domains |
-| `lab2_02_netshow.png` | หน้า 1 · รูปล่าง (net.probe/net.show) | ไม่ |
-| `lab2_03_arpspoof.png` | หน้า 2 · รูป (arp.spoof) | ไม่ |
-| `lab2_04_hstshijack.png` | หน้า 3 · รูป (caplet output) | **ใช่** — targets/replacements |
-| `lab2_05_wireshark_setup.png` | หน้า 4 · รูปบน (Capture Options) | ไม่ |
-| `lab2_06_victim.png` | หน้า 4 · รูปล่าง (browser เหยื่อ) | **ใช่** — URL bar + โลโก้ |
-| `lab2_07_hashed.png` | หน้า 5 · รูปบน (password ถูก hash) | **ใช่** — `Host:` / `Referer:` |
-| `lab2_08_plaintext.png` | หน้า 5 · รูปล่าง (keylogger ได้ plaintext) | **ใช่** — `Host:` / `Referer:` |
-
-> รูปที่ redact ชื่อออกแล้ว ให้ใช้ **กล่องทึบ** (ปิดสนิท) ไม่ใช่ขีดเส้น/ขีดฆ่า — เพราะขีดเส้นตัวอักษรใต้เส้นยังอ่านออก
-
----
-
 ## Lab 1 — HTTP interception (ARP spoof + HSTS hijack)
 
 **เป้าหมาย:** ดักจับ credential ที่ส่งแบบ HTTP POST จากหน้า login (placeholder `bank-example.com`) ที่รันบนเครื่องเหยื่อ ซึ่งเป็นเว็บที่ hash รหัสฝั่ง server (POST body ส่ง plaintext มาให้เห็น)
