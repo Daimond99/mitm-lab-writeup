@@ -1,3 +1,7 @@
 # sensitive originals — never publish (student ID + real domains)
 *.pdf
 *.dot
+
+# screenshots — author adds redacted images later
+images/
+*.png

